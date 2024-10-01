@@ -11,7 +11,8 @@ class ConnectDB:
                                SERVER={server};
                                DATABASE={database};
                                UID={user};
-                               PWD={password}'''
+                               PWD={password};
+                               ENCRYPT=Optional'''
         try:
             conn = pyodbc.connect(ConnectionString)
             conn.autocommit = True
@@ -64,12 +65,11 @@ if __name__ == "__main__":
     DATABASE = os.getenv('MS_SQL_DATABASE')
     USER = os.getenv('MS_SQL_USER')
     PASSWORD = os.getenv('MS_SQL_KEY')
-    new_db = "EmployersVacancies"
+    new_db = "NorthWind"
 
     my_conn = ConnectDB.connect_to_db(SERVER, DATABASE, USER, PASSWORD)
     my_db_operator = MSSQLOperator(my_conn)
     print(my_db_operator.create_database(new_db, "10", "20", "5%"))
-    print(my_db_operator.drop_table(new_db, "Vacancies", SQL_Queries.drop_table))
-    print(my_db_operator.drop_table(new_db, "Employers", SQL_Queries.drop_table))
-    print(my_db_operator.create_table(new_db, "Employers", SQL_Queries.create_employers))
-    print(my_db_operator.create_table(new_db, "Vacancies", SQL_Queries.create_vacancies))
+    print(my_db_operator.create_table(new_db, 'customers_data', SQL_Queries.create_customers_data))
+    print(my_db_operator.create_table(new_db, 'employees_data', SQL_Queries.create_employees_data))
+    print(my_db_operator.create_table(new_db, 'orders_data', SQL_Queries.create_orders_data))

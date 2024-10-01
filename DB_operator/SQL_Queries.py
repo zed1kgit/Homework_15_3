@@ -44,6 +44,35 @@ def create_vacancies(table_name):
     return QUERY
 
 
+def create_customers_data(table_name):
+    QUERY = fr"""CREATE TABLE {table_name}
+                (customer_id nvarchar(10) PRIMARY KEY,
+                company_name nvarchar(100) NOT NULL,
+                contact_name nvarchar(50) NOT NULL);"""
+    return QUERY
+
+
+def create_employees_data(table_name):
+    QUERY = fr"""CREATE TABLE {table_name}
+                (employee_id int IDENTITY(1, 1) PRIMARY KEY,
+                first_name nvarchar(100) NOT NULL,
+                last_name nvarchar(100) NOT NULL,
+                title nvarchar(100) NOT NULL,
+                birth_date date NOT NULL,
+                notes nvarchar(1000) NOT NULL);"""
+    return QUERY
+
+
+def create_orders_data(table_name):
+    QUERY = fr"""CREATE TABLE {table_name}
+                (order_id int IDENTITY(1, 1) PRIMARY KEY,
+                customer_id nvarchar(10) REFERENCES customers_data(customer_id) NOT NULL,
+                employee_id int REFERENCES employees_data(employee_id) NOT NULL,
+                order_date date NOT NULL,
+                ship_city nvarchar(100) NOT NULL);"""
+    return QUERY
+
+
 def drop_table(table_name):
     QUERY = fr"DROP TABLE {table_name}"
     return QUERY
